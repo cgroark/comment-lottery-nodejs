@@ -6,7 +6,7 @@ const clientsRouter = Router();
 clientsRouter.get("/", async (_req, res) => {
   try {
     const { data, error } = await supabase
-      .from('entries')
+      .from('events')
       .select('*');
     if (error) throw error;
     res.json(data);
