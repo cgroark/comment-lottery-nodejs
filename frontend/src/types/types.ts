@@ -1,5 +1,5 @@
 export interface client {
-  id: number,
+  id?: number,
   name: string,
 }
 

@@ -1,12 +1,16 @@
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import type { client } from "../types/types";
 import { useClients } from "../context/ClientsContext";
 
 const ClientForm = () => {
-  const { isLoading, error, saveClient } = useClients();
+  const { isLoading, error, clients, saveClient, getClients, deleteClient } = useClients();
   const [name, setName] = useState<string>("");
   const [status, setStatus] = useState<string | null>(null);
   const [feError, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    getClients();
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +27,7 @@ const ClientForm = () => {
       setError(saveError ?? 'unknown error');
       return;
     }
+    getClients();
   };
 
   return (
@@ -41,6 +46,22 @@ const ClientForm = () => {
           Create Client
         </button>
       </form>
+      <h2>Client List</h2>
+      {clients.length && !isLoading ? (
+        <ul>
+          {clients.map((each: client) =>
+            <li key={each.id}>
+              <div>{each.name}</div>
+            </li>
+          )
+          }
+        </ul>
+      )
+      :
+      <p>No Clients</p>
+    }
+
+
     </>
   )
 }
