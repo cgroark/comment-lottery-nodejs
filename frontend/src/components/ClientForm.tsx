@@ -30,6 +30,16 @@ const ClientForm = () => {
     getClients();
   };
 
+  const handleDelete = async (id: number) => {
+    const { success, error: deleteError } = await deleteClient(id);
+     if(!success) {
+      setError(deleteError ?? 'unknown error');
+      return;
+    }
+    deleteClient(id);
+    getClients();
+  }
+
   return (
     <>
       <div>Add a client</div>
@@ -52,6 +62,8 @@ const ClientForm = () => {
           {clients.map((each: client) =>
             <li key={each.id}>
               <div>{each.name}</div>
+              <button onClick={() => handleDelete(each.id)}>Delete</button>
+              <button>Edit</button>
             </li>
           )
           }
